@@ -7,7 +7,7 @@ export const createNewTodo = async(req: Request,res : Response)=>{
        const newTodo = await Todo.create({
             title 
         })
-          res.status(200).json({message : "New todo is added.",data: newTodo})
+          res.status(200).json({message : "New todo is added.",todo: newTodo})
     } catch (error) {
         console.log(error);
         res.status(500).json({message : "Something went wrong."})
@@ -18,7 +18,7 @@ export const createNewTodo = async(req: Request,res : Response)=>{
 export const getTodos = async (req: Request,res : Response)=>{
     try {
         const todos = await Todo.find();
-         res.status(200).json({message : "All todo fetched",data: todos})
+         res.status(200).json({message : "All todo fetched",todos})
     } catch (error) {
         console.log(error);
          res.status(500).json({message : "Something went wrong."})
@@ -30,7 +30,7 @@ export const getTodo = async (req: Request,res : Response)=>{
      const {todoId} = req.params
     try {
         const todo = await Todo.findById(todoId);
-         res.status(200).json({message : "todo has been fetched",data: todo})
+         res.status(200).json({message : "todo has been fetched",todo})
     } catch (error) {
         console.log(error);
          res.status(500).json({message : "Something went wrong."})
@@ -42,7 +42,7 @@ export const updateTodo = async (req: Request,res : Response)=>{
      const {title} = req.body
     try {
         const updatedTodo = await Todo.findByIdAndUpdate(todoId,{title})
-         res.status(200).json({message : "todo has been updated",data: updatedTodo})
+         res.status(200).json({message : "todo has been updated",todo: updatedTodo})
     } catch (error) {
         console.log(error);
          res.status(500).json({message : "Something went wrong."})
