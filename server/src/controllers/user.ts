@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { User } from "../models/user";
+import generateToken from "../utils/generatetoken";
+import asyncHandler from "../utils/asyncHandler";
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
 
     const existingUser = await User.findOne({ email })
@@ -27,4 +29,21 @@ export const registerUser = async (req: Request, res: Response) => {
         res.status(400);
         throw new Error("Something went wrong!")
     }
-}
+})
+
+export const loginUser = asyncHandler(async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    const existingUser = await User.findOne({ email })
+
+    if (existingUser && await existingUser.matchPassword(password)) {
+        generateToken(res, existingUser._id)
+        res.status(200).json({
+            _id: existingUser._id,
+            name: existingUser.name,
+            email: existingUser.email
+        })
+    } else {
+        res.status(401);
+        throw new Error("Invalid credentials")
+    }
+})
