@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { loginUser, logoutUser, registerUser } from "../controllers/user";
+import { getUserProfile, loginUser, logoutUser, registerUser, updateUserProfile } from "../controllers/user";
+import { protect } from "../middleware/authMiddleware";
 
-const router = Router()
+const router = Router();
 
-router.post("/register", registerUser)
-router.post("/login", loginUser)
-router.post("/logout", logoutUser)
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.post("/logout", logoutUser);
+router.route("/profile").get(protect, getUserProfile).put(protect, updateUserProfile);
 
-export default router
+export default router;
