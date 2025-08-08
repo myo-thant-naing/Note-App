@@ -3,19 +3,31 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import * as z from "zod"
 import { registerSchema } from "../schema/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../slices/userApi";
+import { toast } from "react-toastify";
 
 type Inputs = z.infer<typeof registerSchema>
 
 export default function Register() {
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Inputs>({
+    const [Register, { isLoading }] = useRegisterMutation()
+    const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<Inputs>({
         resolver: zodResolver(registerSchema)
     });
+    const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
-    const submitHandler: SubmitHandler<Inputs> = (data) => {
-        console.log(data);
+    const submitHandler: SubmitHandler<Inputs> = async (data) => {
+        try {
+            const res = await Register(data).unwrap()
+            reset()
+            toast.success(res.message)
+            navigate("/login");
+        } catch (error: any) {
+            toast.error(error?.data?.message || error.message);
+        }
 
     }
+
     return (
         <div className="max-w-lg mx-auto p-4">
             <h2 className="text-2xl font-bold mb-5">Register</h2>
@@ -73,14 +85,23 @@ export default function Register() {
                     </div>
 
                 </div>
-                <button type="submit" disabled={isSubmitting} className="text-white bg-black py-2 px-4 border w-full rounded">Register</button>
+                <button
+                    type="submit"
+                    disabled={isSubmitting || isLoading}
+                    className={`py-2 px-4 border w-full rounded transition-colors ${isLoading
+                        ? "bg-gray-400 cursor-not-allowed text-white" // loading style
+                        : "bg-black text-white hover:bg-gray-800"} // normal style`}
+                >
+                    {isLoading ? "Loading..." : "Register"}
+                </button>
+
 
             </form>
             <Link to={'/login'}>
                 <p className="text-center mt-3">
                     Do you have an account?{' '}
                     <span className=" underline cursor-pointer">
-                        login
+                        Login
                     </span>
                 </p>
             </Link>

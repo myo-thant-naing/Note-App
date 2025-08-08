@@ -29,16 +29,36 @@ export default function Header() {
             </Link>
 
             {
-                userInfo ? <button disabled={isLoading} type="button" onClick={logoutHandler} className="cursor-pointer text-white bg-black py-2 px-4 border">Logout</button> : <div className="space-x-4">
-                    <NavLink to={"/login"} className="text-white bg-black py-2 px-4 border">
-                        Login
+                userInfo ?
+                    <button
+                        disabled={isLoading}
+                        type="button"
+                        onClick={logoutHandler}
+                        className={`py-2 px-4 border rounded text-white transition-colors  ${isLoading
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-black cursor-pointer hover:bg-gray-800"}`}
+                    >
+                        {isLoading ? "Logging out..." : "Logout"}
+                    </button>
+                    : <div className="space-x-4">
+                        <NavLink
+                            to="/login"
+                            className="text-white bg-black py-2 px-4 border rounded hover:bg-gray-800 transition-colors"
+                        >
+                            Login
+                        </NavLink>
 
-                    </NavLink>
 
-                    <NavLink to={"/register"} className="border py-2 px-4">
-                        Register
-                    </NavLink>
-                </div>
+
+                        <NavLink
+                            to="/register"
+                            className="border py-2 px-4 rounded hover:bg-gray-800 hover:text-white hover:scale-105 transition-all duration-200"
+                        >
+                            Register
+                        </NavLink>
+
+
+                    </div>
             }
         </nav>
 

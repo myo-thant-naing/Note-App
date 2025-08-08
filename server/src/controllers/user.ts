@@ -8,10 +8,9 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     const { name, email, password } = req.body;
 
     const existingUser = await User.findOne({ email })
-
     if (existingUser) {
         res.status(400);
-        throw new Error("Email is already existed.")
+        throw new Error("Email is already used.")
     }
     const user = await User.create({
         name,
@@ -45,7 +44,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         })
     } else {
         res.status(401);
-        throw new Error("Invalid credentials")
+        throw new Error("Invalid username or password")
     }
 })
 

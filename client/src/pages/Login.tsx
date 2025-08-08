@@ -72,14 +72,22 @@ export default function Login() {
                     </div>
 
                 </div>
-                <button type="submit" disabled={isSubmitting || isLoading} className="text-white bg-black py-2 px-4 border w-full rounded">Login</button>
+                <button
+                    type="submit"
+                    disabled={isSubmitting || isLoading}
+                    className={`py-2 px-4 border w-full rounded transition-colors ${isLoading
+                        ? "bg-gray-400 cursor-not-allowed text-white" // loading style
+                        : "bg-black text-white hover:bg-gray-800"} // normal style`}
+                >
+                    {isLoading ? "Loading..." : "Login"}
+                </button>
 
             </form>
-            <Link to={'/login'}>
+            <Link to={'/register'}>
                 <p className="text-center mt-3">
-                    Do not have an account?{' '}
+
                     <span className=" underline cursor-pointer">
-                        Rigister
+                        create an account?
                     </span>
                 </p>
             </Link>
