@@ -1,25 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import NoteList from './components/NoteList.tsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Main from './Layouts/Main.tsx'
+import { RouterProvider } from 'react-router-dom'
+import { Provider } from "react-redux"
+import { store } from './store/index.ts'
+import { route } from './route/index.tsx'
 
-const route = createBrowserRouter([
-  {
-    path: "/",
-    element: <Main />,
-    children: [
-      {
-        index: true,
-        element: <NoteList />
-      }
-    ]
-  }
-])
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={route} />
+    <Provider store={store} >
+      <RouterProvider router={route} />
+    </Provider>
   </StrictMode>,
 )

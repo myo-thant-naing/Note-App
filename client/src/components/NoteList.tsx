@@ -24,7 +24,9 @@ export default function NoteList() {
                 setNotes(data)
                 setLoading(false)
             } catch (error) {
+                setLoading(false)
                 throw new Error("Failed to fetch.")
+
             }
 
         }
@@ -81,6 +83,7 @@ export default function NoteList() {
                                 <button type="button" onClick={() => handleDeleteNote(note._id)}>
                                     <TrashIcon className="w-5 cursor-pointer text-red-400" />
                                 </button>
+
                             </div>
                         </li>
                     ))
