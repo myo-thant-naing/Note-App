@@ -101,7 +101,7 @@ export default function Register() {
                 <p className="text-center mt-3">
                     Do you have an account?{' '}
                     <span className=" underline cursor-pointer">
-                        Login
+                        ogin
                     </span>
                 </p>
             </Link>

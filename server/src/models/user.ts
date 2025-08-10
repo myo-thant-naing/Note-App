@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 
 interface IUser extends Document {
     name: string,
+    avator: string
     email: string,
     password: string,
     matchPassword(enteredPassword: string): Promise<boolean>
@@ -10,6 +11,11 @@ interface IUser extends Document {
 
 const userSchema = new Schema<IUser>({
     name: {
+        type: String,
+        required: true
+
+    },
+    avator: {
         type: String,
         required: true
 
@@ -29,7 +35,7 @@ const userSchema = new Schema<IUser>({
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
-        next
+        return next();
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt)

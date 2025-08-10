@@ -6,6 +6,7 @@ import { authRequest } from "../middleware/authMiddleware";
 
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
+    const avator = `https://ui-avatars.com/api/?name=${name}&background=random&length=1`;
 
     const existingUser = await User.findOne({ email })
     if (existingUser) {
@@ -14,6 +15,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     }
     const user = await User.create({
         name,
+        avator,
         email,
         password
 
@@ -23,6 +25,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
             message: "successfully created your account.",
             _id: user._id,
             name: user.name,
+            avator: user.avator,
             email: user.email
         })
     } else {
@@ -40,6 +43,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
         res.status(200).json({
             _id: existingUser._id,
             name: existingUser.name,
+            avator: existingUser.avator,
             email: existingUser.email
         })
     } else {
@@ -69,22 +73,29 @@ export const updateUserProfile = asyncHandler(async (req: authRequest, res: Resp
         res.status(404);
         throw new Error("User not found.")
     }
-    user.name = req.body.name || user.name;
 
-    const { email } = req.body;
-    const existingUser = await User.findOne({ email })
-    if (existingUser) {
-        res.status(401);
-        throw new Error("Invalid credentials")
+    if (req.body.avator === "noAvator" || req.body.avator.startsWith("https://ui-avatars.com/api/")) {
+        const avator = `https://ui-avatars.com/api/?name=${req.body.name}&background=random&length=1`;
+        user.avator = avator;
+    } else {
+        user.avator = req.body.avator;
     }
-    user.email = req.body.email || user.email;
-    user.password = req.body.password || user.password;
 
-
+    user.name = req.body.name
+    const { email } = req.body;
+    if (email != user.email) {
+        const existingUser = await User.findOne({ email })
+        if (existingUser) {
+            res.status(401);
+            throw new Error("Invalid credentials")
+        }
+    }
+    user.email = email || user.email;
     const updatedUser = await user.save();
     const selectedUser = {
         _id: updatedUser._id,
         name: updatedUser.name,
+        avator: updatedUser.avator,
         email: updatedUser.email
     }
     res.status(200).json(selectedUser)

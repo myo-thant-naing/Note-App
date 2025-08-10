@@ -6,6 +6,12 @@ interface loginInput {
 interface RegisterInput extends loginInput {
     name: string;
 }
+interface profileInput {
+    email: string;
+    avator: string;  // FileList from input, or URL string
+    name: string;
+}
+
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -31,7 +37,19 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: "DELETE",
                 credentials: "include"
             })
-        })
+        }),
+        updateProfile: builder.mutation({
+            query: (data: profileInput) => ({
+                url: "profile",
+                method: "PUT",
+                body: data,
+                credentials: "include",
+                headers:
+                    data instanceof FormData ? {} : { "Content-Type": "application/json" },
+            }),
+        }),
+
+
     })
 })
-export const { useRegisterMutation, useLoginMutation, useLogoutMutation } = userApiSlice
+export const { useRegisterMutation, useLoginMutation, useLogoutMutation, useUpdateProfileMutation } = userApiSlice

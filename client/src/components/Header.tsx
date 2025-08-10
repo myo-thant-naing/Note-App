@@ -3,6 +3,7 @@ import type { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../slices/userApi";
 import { clearUserInfo } from "../slices/auth";
+import ProfileWithPopup from "./Profile";
 
 
 export default function Header() {
@@ -21,8 +22,8 @@ export default function Header() {
 
         }
     }
-
     return (
+
 
         <nav className="flex justify-between items-center m-4">
             <Link to={"/"}> <h2 className="font-bold text-2xl">DORO</h2>
@@ -30,16 +31,7 @@ export default function Header() {
 
             {
                 userInfo ?
-                    <button
-                        disabled={isLoading}
-                        type="button"
-                        onClick={logoutHandler}
-                        className={`py-2 px-4 border rounded text-white transition-colors  ${isLoading
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-black cursor-pointer hover:bg-gray-800"}`}
-                    >
-                        {isLoading ? "Logging out..." : "Logout"}
-                    </button>
+                    <ProfileWithPopup userInfo={userInfo} isLoading={isLoading} logoutHandler={logoutHandler} />
                     : <div className="space-x-4">
                         <NavLink
                             to="/login"
@@ -47,9 +39,6 @@ export default function Header() {
                         >
                             Login
                         </NavLink>
-
-
-
                         <NavLink
                             to="/register"
                             className="border py-2 px-4 rounded hover:bg-gray-800 hover:text-white hover:scale-105 transition-all duration-200"

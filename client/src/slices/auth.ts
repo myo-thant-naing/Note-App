@@ -4,6 +4,7 @@ interface authState {
     userInfo: {
         _id: string,
         name: string,
+        avator: string,
         email: string
     } | null
 }
