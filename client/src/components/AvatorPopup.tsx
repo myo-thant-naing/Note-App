@@ -69,7 +69,7 @@ const AvatarPopup: React.FC<AvatarPopupProps> = ({ preview, pickSuggestedAvatar,
                             <img
                                 key={url}
                                 src={url}
-                                alt="Suggested Avatar"
+                                alt="avator"
                                 className={`w-12 h-12 rounded-full cursor-pointer border-2 ${preview === url ? "border-gray-800" : "border-transparent"
                                     }`}
                                 onClick={() => { pickSuggestedAvatar(url); setDeleteProfileClicked(false) }}

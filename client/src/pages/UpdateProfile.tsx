@@ -57,6 +57,7 @@ export default function UpdateProfile() {
     }
     return (
         <div className="max-w-lg mx-auto p-4">
+
             <h2 className="text-2xl font-bold mb-5">Profile</h2>
             <form className="space-y-3" onSubmit={handleSubmit(submitHandler)}>
                 <AvatarWithPopup deleteAvator={deleteAvator} preview={preview} pickSuggestedAvatar={pickSuggestedAvatar} />
