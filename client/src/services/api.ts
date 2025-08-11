@@ -7,7 +7,6 @@ if (import.meta.env.VITE_MODE === "development") {
 if (import.meta.env.VITE_MODE === "production") {
     API_URL = import.meta.env.VITE_API_URL;
 }
-
 const API = axios.create({
     baseURL: API_URL,
     withCredentials: true,
@@ -15,5 +14,5 @@ const API = axios.create({
         "Content-Type": "application/json",
     },
 });
-
+export { API_URL }
 export default API;
