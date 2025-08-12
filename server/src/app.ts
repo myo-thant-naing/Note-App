@@ -29,3 +29,8 @@ app.listen(PORT, () => {
     connectDB()
 
 });
+
+app.get("/", (req, res) => {
+    res.status(200).send("Server is alive");
+});
+
